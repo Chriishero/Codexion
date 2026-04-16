@@ -6,7 +6,7 @@
 /*   By: chrishero <chrishero@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 14:40:47 by chrishero         #+#    #+#             */
-/*   Updated: 2026/04/16 20:26:22 by chrishero        ###   ########.fr       */
+/*   Updated: 2026/04/16 21:15:15 by chrishero        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ void	coding_routine(t_coder *coder, t_dongle *first_dongle,
 {
 	if (take_dongle(coder, first_dongle, simulation) == FALSE)
 		return ;
+	coder_action(coder, TAKEN_DONGLE, simulation);
 	if (take_dongle(coder, second_dongle, simulation) == FALSE)
 	{
 		release_dongle(first_dongle, simulation);
 		return ;
 	}
+	coder_action(coder, TAKEN_DONGLE, simulation);
 	pthread_mutex_lock(&coder->mutex);
 	coder->n_compilation += 1;
 	coder->last_compile_start = get_time(simulation->start_time);
 	pthread_mutex_unlock(&coder->mutex);
-	coder_action(coder, TAKEN_DONGLE, simulation);
-	coder_action(coder, TAKEN_DONGLE, simulation);
 	coder_action(coder, COMPILING, simulation);
 	release_dongle(second_dongle, simulation);
 	release_dongle(first_dongle, simulation);
